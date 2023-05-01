@@ -46,6 +46,11 @@ S922X:
 	PROJECT=Amlogic DEVICE=S922X ARCH=arm ./scripts/build_distro
 	PROJECT=Amlogic DEVICE=S922X ARCH=aarch64 ./scripts/build_distro
 
+S922X-N2:
+	DEVICE_ROOT=S922X PROJECT=Amlogic DEVICE=S922X-N2 ARCH=arm ./scripts/build_distro
+	DEVICE_ROOT=S922X PROJECT=Amlogic DEVICE=S922X-N2 ARCH=aarch64 ./scripts/build_distro
+	unset DEVICE_ROOT
+
 update:
 	PROJECT=PC DEVICE=AMD64 ARCH=x86_64 ./scripts/update_packages
 

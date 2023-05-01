@@ -6,7 +6,7 @@ source ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/options
 FIP_DIR="${ROOT}/build.${DISTRO}-${DEVICE}.aarch64/amlogic-boot-fip-*"
 
 case "${DEVICE}" in
-  S922X)
+  S922X*)
     cp -rf ${PKG_DIR}/bin/${DEVICE}/u-boot.bin ${INSTALL}/usr/share/bootloader/
   ;;
   *)
@@ -28,7 +28,7 @@ if [ "${BOOT_INI}" == true ]
 then
   echo "boot: create boot.ini..."
   cat >${INSTALL}/usr/share/bootloader/boot.ini <<EOF
-ODROIDGOU-UBOOT-CONFIG
+${BOOT_INI_NAME}-UBOOT-CONFIG
 
 setenv dtb_loadaddr "0x10000000"
 setenv loadaddr "0x1B00000"
@@ -36,7 +36,7 @@ setenv loadaddr "0x1B00000"
 setenv bootargs "boot=UUID=@BOOT_UUID@ disk=UUID=@DISK_UUID@ ${EXTRA_CMDLINE}"
 
 load mmc \${devno}:1 \${loadaddr} KERNEL
-load mmc \${devno}:1 \${dtb_loadaddr} ${DEVICE_DTB[0]}.dtb
+load mmc \${devno}:1 \${dtb_loadaddr} meson64_odroid\${variant}.dtb
 
 fdt addr \${dtb_loadaddr}
 

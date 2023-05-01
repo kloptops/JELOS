@@ -30,7 +30,7 @@ if [ "${BOOT_INI}" == true ]
 then
   echo "image: create boot.ini..."
   cat >"${LE_TMP}/boot.ini" <<EOF
-ODROIDGOU-UBOOT-CONFIG
+${BOOT_INI_NAME}-UBOOT-CONFIG
 
 setenv dtb_loadaddr "0x10000000"
 setenv loadaddr "0x1B00000"
@@ -38,7 +38,7 @@ setenv loadaddr "0x1B00000"
 setenv bootargs "boot=UUID=${UUID_SYSTEM} disk=UUID=${UUID_STORAGE} ${EXTRA_CMDLINE}"
 
 load mmc \${devno}:1 \${loadaddr} KERNEL
-load mmc \${devno}:1 \${dtb_loadaddr} ${DEVICE_DTB[0]}.dtb
+load mmc \${devno}:1 \${dtb_loadaddr} meson64_odroid\${variant}.dtb
 
 fdt addr \${dtb_loadaddr}
 

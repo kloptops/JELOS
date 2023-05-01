@@ -36,6 +36,7 @@
     PKG_SOC="s922x"
     BOOT_FIP="odroid-go-ultra"
     BOOT_INI=true
+    BOOT_INI_NAME="ODROIDGOU"
     BIOS_BIN=true
     EXT_LINUX_CONF=false
 
