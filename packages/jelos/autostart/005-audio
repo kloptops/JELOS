@@ -7,19 +7,26 @@
 
 tocon "Configuring Audio..."
 
-STATE=$(systemctl isactive pipewire)
+STATE=$(systemctl isactive pipewire-pulse)
 if [ "${STATE}" = "inactive" ]
 then
-  systemctl start pipewire
+  systemctl start pipewire-pulse
 fi
 
-### Configures device detection and auto switching.
-###
-### These should be loaded by pipewire-pulse.conf but they fail
-### to load there.
+DEFAULT_ID=$(pactl list short cards | awk '! /hdmi/ {print $1; exit}')
+DEFAULT_SINK=$(pactl list short sinks | awk '! /hdmi/ {print $2; exit}')
 
-pactl load-module module-udev-detect &>/dev/null
-pactl load-module module-switch-on-connect &>/dev/null
+if [ ! -z "${DEFAULT_SINK}" ]
+then
+  ### Set the default sink ignoring HDMI
+  pactl set-default-sink ${DEFAULT_SINK}
+  pactl set-default-source ${DEFAULT_SINK}.monitor
+fi
+
+if [ ! -z "${DEVICE_PIPEWIRE_PROFILE}" ]
+then
+  pactl set-card-profile ${DEFAULT_ID} ${DEVICE_PIPEWIRE_PROFILE}
+fi
 
 ### Set the default audio path, needed for some devices
 if [ ! -z "${DEVICE_PLAYBACK_PATH_SPK}" ]
